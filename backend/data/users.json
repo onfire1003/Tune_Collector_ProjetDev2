@@ -1,1 +1,29 @@
-[]
+[
+  {
+    "id": "0e20c56d-c209-4c94-917c-b70ed39fac3c",
+    "username": "MC_Collector",
+    "passwordHash": "scrypt$DQIKDH6geTe+1DSbMXO7iw==$cLLrPFETVfuQzqyvlPl8AdIbxGWEWTgDw6RgVx0TLPtvi8odcrjkpCo/SUIrsd0b6ohEBl5V8sLC1HTiAp5dLQ==",
+    "credits": 0,
+    "packs": 10,
+    "lastPackAt": "2026-11-17T12:42:29.230Z",
+    "createdAt": "2026-11-17T12:42:29.230Z"
+  },
+  {
+    "id": "5f0d178e-7394-4579-a1f8-cefc6183e9bf",
+    "username": "IagoLePluBo",
+    "passwordHash": "scrypt$D0EesNFdcCzBEY5Lte87yw==$uihGPywdajTQn8SEj/Fwo3aT8hgJ1Sd7+L/nDe+D/rk+Qr/vVx8cwIL8j1/r9rp4jb+kLmgnj3+L1QAYhjCq/g==",
+    "credits": 0,
+    "packs": 10,
+    "lastPackAt": "2026-11-17T12:48:20.385Z",
+    "createdAt": "2026-11-17T12:48:20.385Z"
+  },
+  {
+    "id": "2eabc81c-8afe-4d2c-bcd6-49c2e62d61d3",
+    "username": "IagoLePluBo1",
+    "passwordHash": "scrypt$Gh647MAA7tI6gtoaE1c2XQ==$RE+HgVnxL6bom3fEyJ4C7UcJ9uX9GADvMqVhb9NMDg4YUNdxPQxKkK2mwSvXNMicXVJMMr0sEV2KD1EDpohhOw==",
+    "credits": 0,
+    "packs": 10,
+    "lastPackAt": "2026-11-17T12:59:51.873Z",
+    "createdAt": "2026-11-17T12:59:51.873Z"
+  }
+]
