@@ -7,15 +7,16 @@ modification date   :   17.11.2026
 -----------------------------------------------------------------------------------------------------------------------
 */
 
-const deezerConfig = require('../config/deezer.config');
+import * as deezerConfig from '../config/deezer.config.js';
 
 // Types de ressources autorisés
 const ALLOWED_TYPES = ['artist', 'album', 'track'];
 
+
 /**
  * Erreur spécifique aux appels à Deezer.
  */
-class DeezerApiError extends Error {
+export class DeezerApiError extends Error {
     constructor(message, statusCode = 502, code = 'DEEZER_ERROR') {
         super(message);
         this.name = 'DeezerApiError';
@@ -23,6 +24,7 @@ class DeezerApiError extends Error {
         this.code = code;
     }
 }
+
 
 /**
  * Vérifie le type de ressource.
@@ -37,6 +39,7 @@ function validateType(type) {
     }
 }
 
+
 /**
  * Vérifie un identifiant Deezer.
  */
@@ -49,6 +52,7 @@ function validateId(id) {
         );
     }
 }
+
 
 function validateLimit(limit) {
     const parsedLimit = Number(limit);
@@ -67,6 +71,7 @@ function validateLimit(limit) {
 
     return parsedLimit;
 }
+
 
 /**
  * Effectue une requête HTTP vers Deezer.
@@ -102,8 +107,10 @@ async function request(path, params = {}) {
             throw error;
         }
 
-        if (error.name === 'TimeoutError' ||
-            error.name === 'AbortError') {
+        if (
+            error.name === 'TimeoutError' ||
+            error.name === 'AbortError'
+        ) {
             throw new DeezerApiError(
                 'Le délai de réponse de Deezer est dépassé.',
                 504,
@@ -119,10 +126,15 @@ async function request(path, params = {}) {
     }
 }
 
+
 /**
  * Recherche un artiste, un album ou un titre.
  */
-async function search(type, query, limit = deezerConfig.defaultLimit) {
+export async function search(
+    type,
+    query,
+    limit = deezerConfig.defaultLimit
+) {
     validateType(type);
 
     if (typeof query !== 'string' || !query.trim()) {
@@ -134,16 +146,6 @@ async function search(type, query, limit = deezerConfig.defaultLimit) {
     }
 
     const parsedLimit = validateLimit(limit);
-
-    if (!Number.isInteger(parsedLimit) ||
-        parsedLimit < 1 ||
-        parsedLimit > deezerConfig.maxLimit) {
-        throw new DeezerApiError(
-            `La limite doit être comprise entre 1 et ${deezerConfig.maxLimit}.`,
-            400,
-            'INVALID_LIMIT'
-        );
-    }
 
     const result = await request(`/search/${type}`, {
         q: query.trim(),
@@ -158,20 +160,25 @@ async function search(type, query, limit = deezerConfig.defaultLimit) {
     };
 }
 
+
 /**
  * Récupère les détails d'un artiste, album ou titre par son ID.
  */
-async function getById(type, id) {
+export async function getById(type, id) {
     validateType(type);
     validateId(id);
 
     return request(`/${type}/${id}`);
 }
 
+
 /**
  * Récupère les albums d'un artiste.
  */
-async function getArtistAlbums(id, limit = deezerConfig.defaultLimit) {
+export async function getArtistAlbums(
+    id,
+    limit = deezerConfig.defaultLimit
+) {
     validateId(id);
 
     return request(`/artist/${id}/albums`, {
@@ -179,22 +186,17 @@ async function getArtistAlbums(id, limit = deezerConfig.defaultLimit) {
     });
 }
 
+
 /**
  * Récupère les titres d'un album.
  */
-async function getAlbumTracks(id, limit = deezerConfig.defaultLimit) {
+export async function getAlbumTracks(
+    id,
+    limit = deezerConfig.defaultLimit
+) {
     validateId(id);
 
     return request(`/album/${id}/tracks`, {
         limit: validateLimit(limit)
     });
 }
-
-module.exports = {
-    search,
-    getById,
-    getArtistAlbums,
-    getAlbumTracks,
-    DeezerApiError
-};
-

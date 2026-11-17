@@ -7,10 +7,10 @@ modification date   :   17.11.2026
 -----------------------------------------------------------------------------------------------------------------------
 */
 
-const express = require('express');
-const router = express.Router();
+import express from 'express';
+import * as cardsController from '../controllers/cards.controller.js';
 
-const cardsController = require('../controllers/cards.controller');
+const router = express.Router();
 
 // Recherche
 router.get('/search', cardsController.searchCards);
@@ -24,5 +24,4 @@ router.get('/album/:id/tracks', cardsController.getAlbumTracks);
 // Récupération par identifiant
 router.get('/:type/:id', cardsController.getCardById);
 
-module.exports = router;
-
+export default router;

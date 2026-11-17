@@ -7,13 +7,13 @@ modification date   :   17.11.2026
 -----------------------------------------------------------------------------------------------------------------------
 */
 
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 
-const authRoutes = require('./routes/auth.routes');
-const cardsRoutes = require('./routes/cards.routes');
+import authRoutes from './routes/auth.routes.js';
+import cardsRoutes from './routes/cards.routes.js';
 
-function createApp() {
+export function createApp() {
     const app = express();
 
     // Middlewares
@@ -50,5 +50,3 @@ function createApp() {
 
     return app;
 }
-
-module.exports = { createApp };
