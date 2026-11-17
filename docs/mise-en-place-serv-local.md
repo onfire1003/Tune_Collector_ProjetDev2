@@ -30,6 +30,3 @@ Pour que les autres joueurs voient le site, il faut trois choses :
    ```
    http://<adresse>:3000
    ```
-
-Si la personne voit « ok », c'est bon.
-Si c'est pas bon alors tu peux aller niquer ta mère je pense.
