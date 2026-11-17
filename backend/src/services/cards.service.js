@@ -7,7 +7,7 @@ modification date   :   17.11.2026
 -----------------------------------------------------------------------------------------------------------------------
 */
 
-const deezerService = require('./deezer.service');
+import * as deezerService from './deezer.service.js';
 
 
 /**
@@ -23,11 +23,12 @@ function getValidImage(...images) {
     }) ?? null;
 }
 
+
 /**
  * Transforme une ressource Deezer en carte Tune Collector.
  * context permet de compléter les informations manquantes.
  */
-function formatCard(item, type, context = {}) {
+export function formatCard(item, type, context = {}) {
     const artistName =
         type === 'artist'
             ? item.name
@@ -82,7 +83,7 @@ function formatCard(item, type, context = {}) {
 /**
  * Recherche des cartes sur Deezer.
  */
-async function searchCards(type, query, limit) {
+export async function searchCards(type, query, limit) {
     const result = await deezerService.search(type, query, limit);
 
     return {
@@ -93,19 +94,21 @@ async function searchCards(type, query, limit) {
     };
 }
 
+
 /**
  * Récupère une carte précise avec son identifiant Deezer.
  */
-async function getCardById(type, id) {
+export async function getCardById(type, id) {
     const item = await deezerService.getById(type, id);
 
     return formatCard(item, type);
 }
 
+
 /**
  * Récupère les albums d'un artiste.
  */
-async function getArtistAlbums(id, limit) {
+export async function getArtistAlbums(id, limit) {
     const [artist, result] = await Promise.all([
         deezerService.getById('artist', id),
         deezerService.getArtistAlbums(id, limit)
@@ -126,7 +129,7 @@ async function getArtistAlbums(id, limit) {
 /**
  * Récupère les titres d'un album.
  */
-async function getAlbumTracks(id, limit) {
+export async function getAlbumTracks(id, limit) {
     const [album, result] = await Promise.all([
         deezerService.getById('album', id),
         deezerService.getAlbumTracks(id, limit)
@@ -144,12 +147,3 @@ async function getAlbumTracks(id, limit) {
         )
     };
 }
-
-
-module.exports = {
-    formatCard,
-    searchCards,
-    getCardById,
-    getArtistAlbums,
-    getAlbumTracks
-};

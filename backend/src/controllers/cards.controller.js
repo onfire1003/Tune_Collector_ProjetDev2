@@ -7,12 +7,12 @@ modification date   :   17.11.2026
 -----------------------------------------------------------------------------------------------------------------------
 */
 
-const cardsService = require('../services/cards.service');
+import * as cardsService from '../services/cards.service.js';
 
 /**
  * Recherche des artistes, albums ou titres.
  */
-async function searchCards(req, res, next) {
+export async function searchCards(req, res, next) {
     try {
         const { type, q, limit } = req.query;
 
@@ -31,7 +31,7 @@ async function searchCards(req, res, next) {
 /**
  * Récupère une carte par son ID Deezer.
  */
-async function getCardById(req, res, next) {
+export async function getCardById(req, res, next) {
     try {
         const { type, id } = req.params;
 
@@ -46,7 +46,7 @@ async function getCardById(req, res, next) {
 /**
  * Récupère les albums d'un artiste.
  */
-async function getArtistAlbums(req, res, next) {
+export async function getArtistAlbums(req, res, next) {
     try {
         const { id } = req.params;
         const { limit } = req.query;
@@ -62,7 +62,7 @@ async function getArtistAlbums(req, res, next) {
 /**
  * Récupère les titres d'un album.
  */
-async function getAlbumTracks(req, res, next) {
+export async function getAlbumTracks(req, res, next) {
     try {
         const { id } = req.params;
         const { limit } = req.query;
@@ -74,10 +74,3 @@ async function getAlbumTracks(req, res, next) {
         next(error);
     }
 }
-
-module.exports = {
-    searchCards,
-    getCardById,
-    getArtistAlbums,
-    getAlbumTracks
-};
