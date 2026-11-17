@@ -1,13 +1,12 @@
 <script setup>
 import AppHeader from './components/AppHeader.vue';
 import AppFooter from './components/AppFooter.vue';
-import RegisterView from './views/RegisterView.vue';
 </script>
 
 <template>
   <AppHeader />
   <main>
-    <RegisterView />
+    <RouterView />
   </main>
   <AppFooter />
 </template>

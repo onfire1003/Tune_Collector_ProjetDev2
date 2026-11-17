@@ -25,5 +25,14 @@
     "packs": 10,
     "lastPackAt": "2026-11-17T12:59:51.873Z",
     "createdAt": "2026-11-17T12:59:51.873Z"
+  },
+  {
+    "id": "756329b2-3341-44a9-a2a2-f2dd66e41ed9",
+    "username": "Daliatelle",
+    "passwordHash": "scrypt$ipgQgp7afZeAAZWZhQ6pRQ==$R+ICzHvyxIXxf1gfk2fdcDGIqVTF5KqiIeSdXZ1vt0arBLOEtMs7pPHvQissCk4hV5PMcfmb2We231MWa7mhug==",
+    "credits": 0,
+    "packs": 10,
+    "lastPackAt": "2026-11-17T14:05:29.620Z",
+    "createdAt": "2026-11-17T14:05:29.620Z"
   }
 ]
