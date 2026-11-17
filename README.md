@@ -1,1 +1,3 @@
-# Tune_Collector_ProjetDev2
+# Tune Collector
+
+Squelette initial du projet.
