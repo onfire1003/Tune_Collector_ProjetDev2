@@ -1,13 +1,35 @@
+
 {
-  "name": "backend",
+  "name": "tune-collector-backend",
   "version": "1.0.0",
-  "private": true,
+  "description": "API backend de Tune Collector",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch src/server.js"
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test"
   },
+  "keywords": [
+    "tune-collector",
+    "express",
+    "deezer",
+    "api"
+  ],
+  "author": "Equipe Tune Collector",
+  "license": "UNLICENSED",
+  "private": true,
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
-    "express": "^5.3.0"
+    "dotenv": "^17.2.3",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }
