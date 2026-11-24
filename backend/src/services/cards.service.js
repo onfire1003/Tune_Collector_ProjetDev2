@@ -1,13 +1,15 @@
+
 /*
 -----------------------------------------------------------------------------------------------------------------------
 file name           :   cards.service.js
 author              :   Joel Cunha Faria
 creation date       :   17.11.2026
-modification date   :   17.11.2026
+modification date   :   24.11.2026
 -----------------------------------------------------------------------------------------------------------------------
 */
 
 import * as deezerService from './deezer.service.js';
+import * as cardsRepository from '../repositories/cards.repository.js';
 
 
 /**
@@ -81,16 +83,24 @@ export function formatCard(item, type, context = {}) {
 
 
 /**
- * Recherche des cartes sur Deezer.
+ * Recherche des cartes sur Deezer et les enregistre.
  */
 export async function searchCards(type, query, limit) {
     const result = await deezerService.search(type, query, limit);
+
+    // Transformation des résultats en cartes
+    const cards = result.data.map(item => formatCard(item, type));
+
+    // Enregistrement des cartes dans le fichier JSON
+    await Promise.all(
+        cards.map(card => cardsRepository.save(card))
+    );
 
     return {
         type: result.type,
         query: result.query,
         total: result.total,
-        cards: result.data.map(item => formatCard(item, type))
+        cards
     };
 }
 
@@ -99,9 +109,36 @@ export async function searchCards(type, query, limit) {
  * Récupère une carte précise avec son identifiant Deezer.
  */
 export async function getCardById(type, id) {
+
+    // Recherche de la carte dans le fichier JSON
+    const cachedCard = await cardsRepository.getByDeezerId(id, type);
+
+    // Durée de validité du cache : 24 heures en millisecondes
+    const cacheDuration = 24 * 60 * 60 * 1000;
+
+    if (cachedCard) {
+
+        // Calcul du temps écoulé depuis la dernière actualisation
+        const lastUpdate = new Date(cachedCard.updatedAt).getTime();
+        const now = Date.now();
+
+        // Vérification si les données ont moins de 24 heures
+        const isCacheValid = now - lastUpdate < cacheDuration;
+
+        if (isCacheValid) {
+            // Les données sont encore valides : on utilise le cache
+            return cachedCard;
+        }
+    }
+
+    // Carte absente ou cache expiré : récupération depuis Deezer
     const item = await deezerService.getById(type, id);
 
-    return formatCard(item, type);
+    // Conversion des données Deezer au format de notre application
+    const card = formatCard(item, type);
+
+    // Enregistrement ou actualisation de la carte
+    return cardsRepository.save(card);
 }
 
 
@@ -114,14 +151,26 @@ export async function getArtistAlbums(id, limit) {
         deezerService.getArtistAlbums(id, limit)
     ]);
 
+    // Création de la carte de l'artiste
+    const artistCard = formatCard(artist, 'artist');
+
+    // Création des cartes des albums
+    const cards = (result.data ?? []).map(item =>
+        formatCard(item, 'album', {
+            artist: artist.name
+        })
+    );
+
+    // Sauvegarde de l'artiste et de ses albums
+    await Promise.all([
+        cardsRepository.save(artistCard),
+        ...cards.map(card => cardsRepository.save(card))
+    ]);
+
     return {
         artistId: Number(id),
         total: result.total ?? result.data?.length ?? 0,
-        cards: (result.data ?? []).map(item =>
-            formatCard(item, 'album', {
-                artist: artist.name
-            })
-        )
+        cards
     };
 }
 
@@ -135,15 +184,27 @@ export async function getAlbumTracks(id, limit) {
         deezerService.getAlbumTracks(id, limit)
     ]);
 
+    // Création de la carte de l'album
+    const albumCard = formatCard(album, 'album');
+
+    // Création des cartes des titres
+    const cards = (result.data ?? []).map(item =>
+        formatCard(item, 'track', {
+            artist: album.artist?.name ?? null,
+            image: album.cover_xl ?? album.cover_big ?? null,
+            releaseDate: album.release_date ?? null
+        })
+    );
+
+    // Sauvegarde de l'album et de ses titres
+    await Promise.all([
+        cardsRepository.save(albumCard),
+        ...cards.map(card => cardsRepository.save(card))
+    ]);
+
     return {
         albumId: Number(id),
         total: result.total ?? result.data?.length ?? 0,
-        cards: (result.data ?? []).map(item =>
-            formatCard(item, 'track', {
-                artist: album.artist?.name ?? null,
-                image: album.cover_xl ?? album.cover_big ?? null,
-                releaseDate: album.release_date ?? null
-            })
-        )
+        cards
     };
 }
