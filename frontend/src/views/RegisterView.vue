@@ -94,7 +94,7 @@ async function submit() {
       <button :disabled="loading">{{ loading ? 'Création…' : 'Créer mon compte' }}</button>
     </form>
 
-    <p class="switch">Déjà un compte ? <a href="#">Se connecter</a></p>
+    <p class="switch">Déjà un compte ? <RouterLink to="/login">Se connecter</RouterLink></p>
   </section>
 </template>
 

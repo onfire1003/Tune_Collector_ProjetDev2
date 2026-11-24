@@ -3,7 +3,7 @@
 file name           :   app.js
 author              :   Joel Cunha Faria
 creation date       :   17.11.2026
-modification date   :   17.11.2026
+modification date   :   24.11.2026
 -----------------------------------------------------------------------------------------------------------------------
 */
 
@@ -17,8 +17,9 @@ export function createApp() {
     const app = express();
 
     // Middlewares
+    app.disable('x-powered-by');
     app.use(cors());
-    app.use(express.json());
+    app.use(express.json({ limit: '10kb' }));
 
     // Routes
     app.use('/api/auth', authRoutes);
